@@ -25,6 +25,8 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libsasl2-dev \
   && install2.r --error \
     --deps TRUE \
+    BiocStyle \
+    BiocVersion \
     tidyverse \
     gridExtra \
     devtools \
