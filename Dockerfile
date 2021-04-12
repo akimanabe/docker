@@ -1,4 +1,4 @@
-FROM rocker/rstudio:4.0.3
+FROM rocker/rstudio:latest
 
 ENV LANG ja_JP.UTF-8
 ENV LC_ALL ja_JP.UTF-8
@@ -30,4 +30,4 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
     tidyverse \
     gridExtra \
     devtools \
-#    BiocManager\
+    BiocManager\
