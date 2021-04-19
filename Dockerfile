@@ -1,4 +1,4 @@
-FROM rocker/rstudio:3.6.3
+FROM rocker/rstudio:4.0.3
 
 ENV LANG ja_JP.UTF-8
 ENV LC_ALL ja_JP.UTF-8
@@ -25,9 +25,6 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libsasl2-dev \
   && install2.r --error \
     --deps TRUE \
-    BiocStyle \
-    BiocVersion \
     tidyverse \
     gridExtra \
     devtools \
-    BiocManager\
