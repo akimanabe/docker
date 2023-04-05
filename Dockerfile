@@ -1,4 +1,4 @@
-FROM rocker/rstudio:4.0.3
+FROM rocker/verse:latest
 
 ENV LANG ja_JP.UTF-8
 ENV LC_ALL ja_JP.UTF-8
