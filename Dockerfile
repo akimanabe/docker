@@ -18,7 +18,7 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libcairo2-dev \
   libsqlite-dev \
   libmariadbd-dev \
-  libmariadbclient-dev \
+#  libmariadbclient-dev \
   libpq-dev \
   libssh2-1-dev \
   unixodbc-dev \
