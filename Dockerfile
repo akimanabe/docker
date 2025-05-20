@@ -1,30 +1,38 @@
 FROM rocker/verse:latest
 
-ENV LANG ja_JP.UTF-8
-ENV LC_ALL ja_JP.UTF-8
-RUN sed -i '$d' /etc/locale.gen \
-  && echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen \
-    && locale-gen ja_JP.UTF-8 \
-    && /usr/sbin/update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
-RUN /bin/bash -c "source /etc/default/locale"
-RUN ln -sf  /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+ENV LANG=ja_JP.UTF-8 \
+    LANGUAGE=ja_JP:ja \
+    LC_ALL=ja_JP.UTF-8 \
+    TZ=Asia/Tokyo
 
-RUN apt-get update && apt-get install -y \
-   fonts-ipaexfont \
-   fonts-noto-cjk
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        fonts-ipaexfont \
+        fonts-noto-cjk \
+        locales \
+        tzdata \
+        libcurl4-openssl-dev \
+        libssl-dev \
+        libxml2-dev \
+        libgit2-dev \
+        libpng-dev \
+        libjpeg-dev \
+        libcairo2-dev \
+        libgl1-mesa-dev \
+        libharfbuzz-dev \
+        libfribidi-dev \
+        libfreetype6-dev \
+        libtiff5-dev && \
+    echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen ja_JP.UTF-8 && \
+    ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update -qq && apt-get -y --no-install-recommends install \
-  libxml2-dev \
-  libcairo2-dev \
-  libsqlite-dev \
-  libmariadbd-dev \
-  libmariadbclient-dev \
-  libpq-dev \
-  libssh2-1-dev \
-  unixodbc-dev \
-  libsasl2-dev \
-  && install2.r --error \
-    --deps TRUE \
-    tidyverse \
-    gridExtra \
-    devtools \
+# Install required R packages including ggpattern
+RUN R -e "install.packages(c('tidyverse', 'gridExtra', 'devtools', 'remotes'), repos='https://cloud.r-project.org')" && \
+    R -e "remotes::install_github('coolbutuseless/ggpattern')" && \
+    R -e "devtools::install_github('ichimomo/frasyr@dev')"
+
+CMD ["/init"]
